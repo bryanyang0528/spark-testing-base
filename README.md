@@ -12,10 +12,10 @@ This is not my beautiful code.
 
 ## How?
 
-So you include com.holdenkarau.spark-testing-base [spark_version]_0.6.0 and extend one of the classes and write some simple tests instead.  For example to include this in a project using Spark 2.1.0:
+So you include com.holdenkarau.spark-testing-base [spark_version]_0.7.0 and extend one of the classes and write some simple tests instead.  For example to include this in a project using Spark 2.1.1:
 
 ```scala
-"com.holdenkarau" %% "spark-testing-base" % "2.1.0_0.6.0" % "test"
+"com.holdenkarau" %% "spark-testing-base" % "2.1.1_0.7.0" % "test"
 ```
 
 or
@@ -24,7 +24,7 @@ or
 <dependency>
     <groupId>com.holdenkarau</groupId>
     <artifactId>spark-testing-base_2.11</artifactId>
-    <version>${spark.version}_0.6.0</version>
+    <version>${spark.version}_0.7.0</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -64,8 +64,12 @@ In surefire make sure that forkCount is set to 1 and reuseForks is true.
 
 ## Where is this from?
 
-Much of this code is a stripped down version of the test suite bases that are in Apache Spark but are not accessible. Other parts are also inspired by ssbase (scalacheck generators for Spark).
+Much of this code is a stripped down version of the test suite bases that are in Apache Spark but are not accessible. Other parts are also inspired by sscheck (scalacheck generators for Spark).
 
 Other parts of this are implemented on top of the test suite bases to make your life even easier.
+
+## What are some other options?
+
+While we hope you choose our library, https://github.com/juanrh/sscheck , https://github.com/hammerlab/spark-tests , https://github.com/wdm0006/DummyRDD , and more https://www.google.com/search?q=python+spark+testing+libraries exist as options.
 
 ## [Release Notes](RELEASE_NOTES.md)
