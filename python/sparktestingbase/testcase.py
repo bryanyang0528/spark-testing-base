@@ -55,14 +55,6 @@ class SparkTestingBaseTestCase(unittest2.TestCase):
 
     def compareRDD(self, expected, result):
         expectedKeyed = expected.map(lambda x: (x, 1))\
-<<<<<<< HEAD
-			.reduceByKey(lambda x, y: x + y)
-        resultKeyed = result.map(lambda x: (x, 1))\
-		      .reduceByKey(lambda x, y: x + y)
-        return expectedKeyed.cogroup(resultKeyed)\
-	       .map(lambda x: tuple(map(list,x[1])))\
-	       .filter(lambda x: x[0] != x[1]).take(1)
-=======
                                 .reduceByKey(lambda x, y: x + y)
         resultKeyed = result.map(lambda x: (x, 1))\
                             .reduceByKey(lambda x, y: x + y)
@@ -81,7 +73,6 @@ class SparkTestingBaseTestCase(unittest2.TestCase):
         return indexExpected.cogroup(indexResult)\
                             .map(lambda x: tuple(map(list, x[1])))\
                             .filter(lambda x: x[0] != x[1]).take(1)
->>>>>>> upstream/master
 
 
 class SparkTestingBaseReuse(unittest2.TestCase):
