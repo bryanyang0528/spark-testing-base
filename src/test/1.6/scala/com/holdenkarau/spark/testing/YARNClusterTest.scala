@@ -13,7 +13,9 @@ class YARNClusterTest extends FunSuite with BeforeAndAfterAll {
     yarnCluster = new YARNCluster()
     yarnCluster.startYARN()
 
-    val sparkConf = new SparkConf().setMaster("yarn-client").setAppName("test")
+    val sparkConf = new SparkConf()
+      .setMaster("yarn-client")
+      .setAppName("test")
     sc = new SparkContext(sparkConf)
   }
 
@@ -31,8 +33,9 @@ class YARNClusterTest extends FunSuite with BeforeAndAfterAll {
 
     strRDD.saveAsTextFile(tmpDir.getAbsolutePath)
 
-    val readStr = sc.textFile(tmpDir.getAbsolutePath).collect().head
-    assert(readStr === originalStr)
+    val readStr = sc.textFile(tmpDir.getAbsolutePath).collect().headOption
+    assert(readStr.isDefined)
+    readStr.foreach(result => assert(result === originalStr))
   }
 
   override def afterAll(): Unit = {

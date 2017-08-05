@@ -19,9 +19,7 @@ package com.holdenkarau.spark.testing
 
 import org.apache.spark._
 
-import org.scalatest.BeforeAndAfterAll
-import org.scalatest.BeforeAndAfterEach
-import org.scalatest.Suite
+import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, Suite}
 
 /**
  * Manages a local `sc` {@link SparkContext} variable,
@@ -47,7 +45,9 @@ trait LocalSparkContext extends BeforeAndAfterEach
 
 object LocalSparkContext {
   def stop(sc: SparkContext) {
-    Option(sc).foreach(_.stop())
+    Option(sc).foreach{ctx =>
+      ctx.stop()
+    }
     // To avoid Akka rebinding to the same port, since it doesn't
     // unbind immediately on shutdown.
     System.clearProperty("spark.driver.port")

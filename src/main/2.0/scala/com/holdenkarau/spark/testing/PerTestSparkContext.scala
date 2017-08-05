@@ -22,45 +22,24 @@ import org.apache.spark._
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, Suite}
 
 /**
- * Manages a local `sc` {@link SparkContext} variable,
- * correctly stopping it after each test.
+ * Provides a local `sc`
+ * {@link SparkContext} variable, correctly stopping it after each test.
+ * The stopping logic is provided in {@link LocalSparkContext}.
  */
-trait LocalSparkContext extends BeforeAndAfterEach
-    with BeforeAndAfterAll { self: Suite =>
+trait PerTestSparkContext extends LocalSparkContext with BeforeAndAfterEach
+    with SparkContextProvider { self: Suite =>
 
-  @transient var sc: SparkContext = _
+  override def beforeAll() {
+    EvilSparkContext.stopActiveSparkContext()
+  }
 
+  override def beforeEach() {
+    sc = new SparkContext(conf)
+    setup(sc)
+    super.beforeEach()
+  }
 
   override def afterEach() {
-    resetSparkContext()
     super.afterEach()
   }
-
-  def resetSparkContext() {
-    LocalSparkContext.stop(sc)
-    sc = null
-  }
-
-}
-
-object LocalSparkContext {
-  def stop(sc: SparkContext) {
-    Option(sc).foreach{ctx =>
-      ctx.stop()
-    }
-    // To avoid Akka rebinding to the same port, since it doesn't
-    // unbind immediately on shutdown.
-    System.clearProperty("spark.driver.port")
-  }
-
-  /** Runs `f` by passing in `sc` and ensures that `sc` is stopped. */
-  def withSpark[T](sc: SparkContext)(f: SparkContext => T): T = {
-    try {
-      f(sc)
-    } finally {
-      stop(sc)
-    }
-  }
-
-  def clearLocalRootDirs(): Unit = SparkUtils.clearLocalRootDirs()
 }
